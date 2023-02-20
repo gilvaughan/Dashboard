@@ -136,9 +136,14 @@ fig_samples_by_month.update_layout(
 )
 
 #---- RADIO BUTTONS ----
-display_sections = ['Full List', 'State', 'Buble Graph']
+display_sections = ['Sample Search', 'Full List', 'State', 'Buble Graph']
 selection_buttons = st.radio("Make a selection:", display_sections)
 st.markdown("###")
+
+if selection_buttons == 'Sample Search':
+    specimen = st.text_input('Please enter specimen ID', 'Full or partial Sample ID')
+    sample_search = df[df['Sample ID'].str.contains(specimen)]
+    st.dataframe(sample_search)  
 
 if selection_buttons == 'Full List':
     st.dataframe(df)
