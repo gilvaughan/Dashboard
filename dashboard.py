@@ -149,7 +149,7 @@ if selection_buttons == 'Full List':
     st.dataframe(df)
 
 if selection_buttons == 'State':
-    if st.button('Show/hide sidebar'):
+    if st.button('Show/hide filter menu'):
         st.session_state.sidebar_state = 'expanded' if st.session_state.sidebar_state == 'collapsed' else 'collapsed'
         st.experimental_rerun()    
     left_column, right_column = st.columns(2)
