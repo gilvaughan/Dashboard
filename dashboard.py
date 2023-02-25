@@ -141,8 +141,8 @@ selection_buttons = st.radio("Make a selection:", display_sections)
 st.markdown("###")
 
 if selection_buttons == 'Sample Search':
-    col1, box, col2 = st.beta_columns([1,3,1]) 
-    specimen = box.text_input('Please enter specimen ID:', 'Full or partial sample ID')
+    col1, col2, col3, col4, col5 = st.beta_columns([1,1,1,1,1]) 
+    specimen = col2.text_input('Please enter specimen ID:', 'Full or partial sample ID')
     sample_search = df[df['Sample ID'].str.contains(specimen)]
     st.dataframe(sample_search)  
 
