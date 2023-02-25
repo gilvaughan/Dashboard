@@ -141,32 +141,33 @@ selection_buttons = st.radio("Make a selection:", display_sections)
 st.markdown("###")
 
 if selection_buttons == 'Sample Search':
-    specimen = st.text_input('Please enter specimen ID', 'Full or partial sample ID')
+    col1, box, col2 = st.beta_columns([1,3,1]) 
+    specimen = box.text_input('Please enter specimen ID:', 'Full or partial sample ID')
     sample_search = df[df['Sample ID'].str.contains(specimen)]
     st.dataframe(sample_search)  
 
 if selection_buttons == 'Monthly Search':
-    month_input = st.text_input('Please enter month')
+    month_input = st.text_input('Please enter month:', 'Three letter code')
     month_search = df[df['Month'].str.contains(month_input)]
     st.dataframe(month_search)  
     
 if selection_buttons == 'Genotype Search':
-    genotype = st.text_input('Please enter genotype', '1a, 1b, 3a, etc')
+    genotype = st.text_input('Please enter genotype:', '1a, 1b, 3a, etc')
     genotype_search = df[df['Genotype'].str.contains(genotype)]
     st.dataframe(genotype_search) 
     
 if selection_buttons == 'Cluster Identification':
-    cluster = st.text_input('Please enter cluster ID', 'Cluster-ID')
+    cluster = st.text_input('Please enter cluster ID:', 'Cluster-ID')
     cluster_id = df[df['Cluster'].str.contains(cluster)]
     st.dataframe(cluster_id) 
     
 if selection_buttons == 'Instrument':
-    miseq = st.text_input('Please enter instrument number', 'MiSeq-1, MiSeq-2, etc')
+    miseq = st.text_input('Please enter instrument number:', 'MiSeq-1, MiSeq-2, etc')
     miseq_report = df[df['Instrument'].str.contains(miseq)]
     st.dataframe(miseq_report) 
     
 if selection_buttons == 'Sequence Query':
-    sequence = st.text_input('Please enter nucleotyde sequence', 'Only DNA sequences allowed')
+    sequence = st.text_input('Please enter nucleotyde sequence:', 'Only DNA sequences allowed')
     sequence_query = df[df['Sequence'].str.contains(sequence)]
     st.dataframe(sequence_query) 
     
