@@ -152,17 +152,17 @@ if selection_buttons == 'Monthly Search':
     st.dataframe(month_search)  
     
 if selection_buttons == 'Genotype Search':
-    genotype = st.text_input('Please enter genotype:', '1a, 1b, 3a, etc')
+    genotype = col1.text_input('Please enter genotype:', '1a, 1b, 3a, etc')
     genotype_search = df[df['Genotype'].str.contains(genotype)]
     st.dataframe(genotype_search) 
     
 if selection_buttons == 'Cluster Identification':
-    cluster = st.text_input('Please enter cluster ID:', 'Cluster-ID')
+    cluster = col1.text_input('Please enter cluster ID:', 'Cluster-ID')
     cluster_id = df[df['Cluster'].str.contains(cluster)]
     st.dataframe(cluster_id) 
     
 if selection_buttons == 'Instrument':
-    miseq = st.text_input('Please enter instrument number:', 'MiSeq-1, MiSeq-2, etc')
+    miseq = col1.text_input('Please enter instrument number:', 'MiSeq-1, MiSeq-2, etc')
     miseq_report = df[df['Instrument'].str.contains(miseq)]
     st.dataframe(miseq_report) 
     
