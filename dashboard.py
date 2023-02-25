@@ -145,10 +145,10 @@ if selection_buttons == 'Sample Search':
     sample_search = df[df['Sample ID'].str.contains(specimen)]
     st.dataframe(sample_search)  
 
-if selection_buttons == 'Monthy Search':
-    meses = st.text_input('Please enter month', 'Jan, Feb, etc')
-    meses_search = df[df['Month'].str.contains(meses)]
-    st.dataframe(meses_search)  
+if selection_buttons == 'Monthly Search':
+    month_input = st.text_input('Please enter month')
+    month_search = df[df['Month'].str.contains(month_input)]
+    st.dataframe(month_search)  
     
 if selection_buttons == 'Genotype Search':
     genotype = st.text_input('Please enter genotype', '1a, 1b, 3a, etc')
