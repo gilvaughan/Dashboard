@@ -139,15 +139,15 @@ fig_samples_by_month.update_layout(
 display_sections = ['Sample Search', 'Monthly Search', 'Genotype Search', 'Cluster Identification', 'Instrument', 'Sequence Query', 'Full List', 'State', 'Buble Graph']
 selection_buttons = st.radio("Make a selection:", display_sections)
 st.markdown("###")
+col1, col2, col3, col4, col5 = st.beta_columns([1,1,1,1,1]) 
 
 if selection_buttons == 'Sample Search':
-    col1, col2, col3, col4, col5 = st.beta_columns([1,1,1,1,1]) 
-    specimen = col2.text_input('Please enter specimen ID:', 'Full or partial sample ID')
+    specimen = col1.text_input('Please enter specimen ID:', 'Full or partial sample ID')
     sample_search = df[df['Sample ID'].str.contains(specimen)]
     st.dataframe(sample_search)  
 
 if selection_buttons == 'Monthly Search':
-    month_input = st.text_input('Please enter month:', 'Three letter code')
+    month_input = col1.text_input('Please enter month:', 'Three letter code')
     month_search = df[df['Month'].str.contains(month_input)]
     st.dataframe(month_search)  
     
