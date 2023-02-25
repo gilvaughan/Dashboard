@@ -145,6 +145,11 @@ if selection_buttons == 'Sample Search':
     sample_search = df[df['Sample ID'].str.contains(specimen)]
     st.dataframe(sample_search)  
 
+if selection_buttons == 'Monthy Search':
+    month = st.text_input('Please enter month')
+    month_search = df[df['Month'].str.contains(month)]
+    st.dataframe(month_search)      
+    
 if selection_buttons == 'Full List':
     st.dataframe(df)
 
