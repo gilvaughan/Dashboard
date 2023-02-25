@@ -146,8 +146,8 @@ if selection_buttons == 'Sample Search':
     st.dataframe(sample_search)  
 
 if selection_buttons == 'Monthy Search':
-    month = st.text_input('Please enter month', 'Month')
-    month_search = df[df['Month'].str.contains(month)]
+    monthly = st.text_input('Please enter month', 'Jan, Feb, etc')
+    month_search = df[df['Month'].str.contains(monthly)]
     st.dataframe(month_search)  
     
 if selection_buttons == 'Genotype Search':
@@ -156,17 +156,17 @@ if selection_buttons == 'Genotype Search':
     st.dataframe(genotype_search) 
     
 if selection_buttons == 'Cluster Identification':
-    cluster = st.text_input('Please enter cluster ID')
+    cluster = st.text_input('Please enter cluster ID', 'Cluster-ID')
     cluster_id = df[df['Cluster'].str.contains(cluster)]
     st.dataframe(cluster_id) 
     
 if selection_buttons == 'Instrument':
-    miseq = st.text_input('Please enter month')
+    miseq = st.text_input('Please enter month', 'MiSeq-1, MiSeq-2, etc')
     miseq_report = df[df['Instrument'].str.contains(miseq)]
     st.dataframe(miseq_report) 
     
 if selection_buttons == 'Sequence Query':
-    sequence = st.text_input('Please enter nucleotyde sequence')
+    sequence = st.text_input('Please enter nucleotyde sequence', 'Only DNA sequences allowed')
     sequence_query = df[df['Sequence'].str.contains(sequence)]
     st.dataframe(sequence_query) 
     
