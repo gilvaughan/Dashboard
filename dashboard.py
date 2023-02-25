@@ -141,12 +141,12 @@ selection_buttons = st.radio("Make a selection:", display_sections)
 st.markdown("###")
 
 if selection_buttons == 'Sample Search':
-    specimen = st.text_input('Please enter specimen ID', 'Full or partial Sample ID')
+    specimen = st.text_input('Please enter specimen ID', 'Full or partial sample ID')
     sample_search = df[df['Sample ID'].str.contains(specimen)]
     st.dataframe(sample_search)  
 
 if selection_buttons == 'Monthy Search':
-    month = st.text_input('Please enter month')
+    month = st.text_input('Please enter month', 'Month')
     month_search = df[df['Month'].str.contains(month)]
     st.dataframe(month_search)  
     
@@ -157,12 +157,12 @@ if selection_buttons == 'Genotype Search':
     
 if selection_buttons == 'Cluster Identification':
     cluster = st.text_input('Please enter cluster ID')
-    cluster_id = df[df['Month'].str.contains(cluster)]
+    cluster_id = df[df['Cluster'].str.contains(cluster)]
     st.dataframe(cluster_id) 
     
 if selection_buttons == 'Instrument':
     miseq = st.text_input('Please enter month')
-    miseq_report = df[df['Month'].str.contains(miseq)]
+    miseq_report = df[df['Instrument'].str.contains(miseq)]
     st.dataframe(miseq_report) 
     
 if selection_buttons == 'Sequence Query':
