@@ -27,8 +27,8 @@ def get_data_from_excel():
         engine="openpyxl",
         sheet_name="Sample_inventory",
         skiprows=3,
-        usecols="B:L",
-        nrows=88,
+        usecols="B:P",
+        nrows=626,
     )
     return df
 
