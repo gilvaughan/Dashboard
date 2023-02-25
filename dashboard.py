@@ -136,7 +136,7 @@ fig_samples_by_month.update_layout(
 )
 
 #---- RADIO BUTTONS ----
-display_sections = ['Sample Search', 'Full List', 'State', 'Buble Graph']
+display_sections = ['Sample Search', 'Monthly Search', 'Genotype Search', 'Cluster Identification', 'Instrument' 'Sequence Query', 'Full List', 'State', 'Buble Graph']
 selection_buttons = st.radio("Make a selection:", display_sections)
 st.markdown("###")
 
@@ -148,7 +148,27 @@ if selection_buttons == 'Sample Search':
 if selection_buttons == 'Monthy Search':
     month = st.text_input('Please enter month')
     month_search = df[df['Month'].str.contains(month)]
-    st.dataframe(month_search)      
+    st.dataframe(month_search)  
+    
+if selection_buttons == 'Genotype Search':
+    genotype = st.text_input('Please enter genotype', '1a, 1b, 3a, etc')
+    genotype_search = df[df['Genotype'].str.contains(genotype)]
+    st.dataframe(genotype_search) 
+    
+if selection_buttons == 'Cluster Identification':
+    cluster = st.text_input('Please enter cluster ID')
+    cluster_id = df[df['Month'].str.contains(cluster)]
+    st.dataframe(cluster_id) 
+    
+if selection_buttons == 'Instrument':
+    miseq = st.text_input('Please enter month')
+    miseq_report = df[df['Month'].str.contains(miseq)]
+    st.dataframe(miseq_report) 
+    
+if selection_buttons == 'Sequence Query':
+    sequence = st.text_input('Please enter nucleotyde sequence')
+    sequence_query = df[df['Sequence'].str.contains(sequence)]
+    st.dataframe(sequence_query) 
     
 if selection_buttons == 'Full List':
     st.dataframe(df)
