@@ -146,9 +146,9 @@ if selection_buttons == 'Sample Search':
     st.dataframe(sample_search)  
 
 if selection_buttons == 'Monthy Search':
-    monthly = st.text_input('Please enter month', 'Jan, Feb, etc')
-    month_search = df[df['Month'].str.contains(monthly)]
-    st.dataframe(month_search)  
+    meses = st.text_input('Please enter month', 'Jan, Feb, etc')
+    meses_search = df[df['Month'].str.contains(meses)]
+    st.dataframe(meses_search)  
     
 if selection_buttons == 'Genotype Search':
     genotype = st.text_input('Please enter genotype', '1a, 1b, 3a, etc')
@@ -161,7 +161,7 @@ if selection_buttons == 'Cluster Identification':
     st.dataframe(cluster_id) 
     
 if selection_buttons == 'Instrument':
-    miseq = st.text_input('Please enter month', 'MiSeq-1, MiSeq-2, etc')
+    miseq = st.text_input('Please enter instrument number', 'MiSeq-1, MiSeq-2, etc')
     miseq_report = df[df['Instrument'].str.contains(miseq)]
     st.dataframe(miseq_report) 
     
