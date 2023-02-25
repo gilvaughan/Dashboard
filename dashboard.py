@@ -136,7 +136,7 @@ fig_samples_by_month.update_layout(
 )
 
 #---- RADIO BUTTONS ----
-display_sections = ['Sample Search', 'Monthly Search', 'Genotype Search', 'Cluster Identification', 'Instrument' 'Sequence Query', 'Full List', 'State', 'Buble Graph']
+display_sections = ['Sample Search', 'Monthly Search', 'Genotype Search', 'Cluster Identification', 'Instrument', 'Sequence Query', 'Full List', 'State', 'Buble Graph']
 selection_buttons = st.radio("Make a selection:", display_sections)
 st.markdown("###")
 
