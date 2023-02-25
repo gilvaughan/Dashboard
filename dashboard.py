@@ -119,7 +119,7 @@ fig_samples_by_state.update_layout(
 )
 
 # SAMPLES BY MONTH [CHART]
-"""
+
 samples_by_month = df_selection.groupby(by=["State", "Month"]).size().to_frame('Months').reset_index()
 fig_samples_by_month = px.bar(
     samples_by_month,
@@ -134,23 +134,6 @@ fig_samples_by_month.update_layout(
     plot_bgcolor="rgba(0,0,0,0)",
     yaxis=(dict(showgrid=False)),
 )
-"""
-
-samples_by_month = df_selection.groupby(by=["State", "Month"]).size().to_frame('Months').reset_index()
-monthly = samples_by_month['Month'].unique()
-states = samples_by_month['State'].unique()
-
-bars_objects = []
-for state in states: 
-    bar = go.Bar(name=state, x=monthly,
-                 y=samples_by_month.query("State == @state")['Months']
-                 )
-    bars_objects.append(bar)
-    
-fig_samples_by_month = go.Figure(bars_objects)
-fig_samples_by_month.update_traces(hovertemplate='Samples: %{y}') ## Add whatever text you want
-fig_samples_by_month.update_layout(barmode='stack')
-fig_samples_by_month.show()
 
 
 #---- RADIO BUTTONS ----
