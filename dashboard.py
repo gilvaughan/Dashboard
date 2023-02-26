@@ -33,7 +33,16 @@ def get_data_from_excel():
     )
     return df
 
+
 df = get_data_from_excel()
+
+# ---- SORTING THE DATA ----
+months = {'Jan':1,'Feb':2,'Mar':3, 
+          'Apr':4, 'May':5, 'Jun':6, 
+          'Jul':7, 'Aug':8, 'Sep':9, 
+          'Oct':10, 'Nov':11, 'Dec':12}
+
+df = df.sort_values('Month', key = lambda x: x.apply(lambda x:months[x]))
 
 # ---- SLIDE BAR ----
 
