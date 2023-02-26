@@ -120,22 +120,6 @@ fig_samples_by_state.update_layout(
 )
 
 # SAMPLES BY MONTH [CHART]
-"""
-samples_by_month = df_selection.groupby(by=["State", "Month"]).size().to_frame('Months').reset_index()
-fig_samples_by_month = px.bar(
-    samples_by_month,
-    x="State",
-    y="Month",
-    title="<b>Monthly</b>",
-    color_discrete_sequence=["#0083B8"] * len(samples_by_month),
-    template="plotly_white",
-)
-fig_samples_by_month.update_layout(
-    xaxis=dict(tickmode="linear"),
-    plot_bgcolor="rgba(0,0,0,0)",
-    yaxis=(dict(showgrid=False)),
-)
-"""
 
 samples_by_month = df_selection.groupby(by=["State", "Month"]).size().to_frame('Months').reset_index()
 monthly = samples_by_month['Month'].unique()
