@@ -56,12 +56,6 @@ user = st.sidebar.multiselect(
     default=df["User"].unique()
 )
 
-userID = st.sidebar.multiselect(
-    "User ID:",
-    options=df["UserID"].unique(),
-    default=df["UserID"].unique()
-)
-
 month = st.sidebar.multiselect(
     "Receiving date:",
     options=df["Month"].unique(),
@@ -69,7 +63,7 @@ month = st.sidebar.multiselect(
 )
 
 df_selection = df.query(
-    "State == @state & Result == @result & User == @user & UserID == @userID & Month ==@month "
+    "State == @state & Result == @result & User == @user & Month ==@month "
 )
 
 # ---- MAINPAGE ----
@@ -82,7 +76,7 @@ st.markdown("##")
 samples_processed = int(df_selection["Result"].str.count("Po|Ne|Un").sum())
 positive_samples = int(df_selection["Result"].str.count("Positive").sum())
 negative_samples = int(df_selection["Result"].str.count("Negative").sum())
-negative_samples = int(df_selection["Result"].str.count("Undetermined").sum())
+undetermined_samples = int(df_selection["Result"].str.count("Undetermined").sum())
 
 first_column, second_column, third_column, forth_column = st.columns(4)
 with first_column:
@@ -95,8 +89,8 @@ with third_column:
     st.subheader("Negative Samples:")
     st.markdown(f":red[Total:\t{negative_samples}]")
 with forth_column:
-    st.subheader("Negative Samples:")
-    st.markdown(f":red[Total:\t{negative_samples}]")
+    st.subheader("Undetermined Samples:")
+    st.markdown(f":red[Total:\t{undetermined_samples}]")
 
 st.markdown("""---""")
 
