@@ -108,7 +108,7 @@ for state in states:
     bars_objects.append(bar)
     
 fig_samples_by_state = go.Figure(bars_objects)
-fig_samples_by_state.update_traces(hovertemplate='Samples: %{y}') ## Add whatever text you want
+fig_samples_by_state.update_traces(hovertemplate='Samples: %{x}') ## Add whatever text you want
 fig_samples_by_state.update_layout(barmode='stack')
 
 # SAMPLES BY MONTH [CHART]
