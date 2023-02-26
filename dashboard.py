@@ -117,9 +117,12 @@ samples_by_month = df_selection.groupby(by=["State", "Month"]).size().to_frame('
 monthly = samples_by_month['Month'].unique()
 states = samples_by_month['State'].unique()
 
+ordered_months = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"]
+
 bars_objects = []
 for state in states: 
-    bar = go.Bar(name=state, x=monthly,
+    bar = go.Bar(name=state, x=ordered_months,
                  y=samples_by_month.query("State == @state")['Months']
                  )
     bars_objects.append(bar)
