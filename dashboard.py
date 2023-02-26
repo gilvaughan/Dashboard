@@ -96,22 +96,20 @@ st.markdown("""---""")
 
 # SAMPLES BY STATE [CHART]
 
-samples_by_state = (
-    df_selection.groupby(by=["State", "Result"]).size().to_frame('Results').reset_index()
-)
-fig_samples_by_state = px.bar(
-    samples_by_state,
-    x="Result",
-    y="State",
-    orientation="h",
-    title="<b>Samples by State</b>",
-    color_discrete_sequence=["#0083B8"] * len(samples_by_state),
-    template="plotly_white",
-)
-fig_samples_by_state.update_layout(
-    plot_bgcolor="rgba(0,0,0,0)",
-    xaxis=(dict(showgrid=False))
-)
+samples_by_state = df_selection.groupby(by=["State", "Result"]).size().to_frame('Results').reset_index()
+results = samples_by_state['Result'].unique()
+states = samples_by_state['State'].unique()
+
+bars_objects = []
+for state in states: 
+    bar = go.Bar(name=state, y=results, orientation='h',
+                 x=samples_by_state.query("State == @state")['Results']
+                 )
+    bars_objects.append(bar)
+    
+fig_samples_by_state = go.Figure(bars_objects)
+fig_samples_by_state.update_traces(hovertemplate='Samples: %{y}') ## Add whatever text you want
+fig_samples_by_state.update_layout(barmode='stack')
 
 # SAMPLES BY MONTH [CHART]
 
