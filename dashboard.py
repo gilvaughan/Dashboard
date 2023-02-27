@@ -76,6 +76,7 @@ month = st.sidebar.multiselect(
     default=df["Month"].unique(),
 )
 
+
 df_selection = df.query(
     "State == @state & Result == @result & User == @user & Month ==@month "
 )
@@ -149,36 +150,41 @@ fig_samples_by_month.update_layout(barmode='stack')
 display_sections = ['Sample Search', 'Monthly Search', 'Genotype Search', 'Cluster Identification', 'Instrument', 'Sequence Query', 'Full List', 'State', 'Buble Graph']
 selection_buttons = st.radio("Make a selection:", display_sections)
 st.markdown("###")
-col1, col2, col3, col4, col5 = st.beta_columns([1,1,1,1,1]) 
+col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1]) 
 
 if selection_buttons == 'Sample Search':
     specimen = col1.text_input('Please enter specimen ID:', 'Full or partial sample ID')
     sample_search = df[df['Sample ID'].str.contains(specimen)]
-    st.dataframe(sample_search)  
+    sample_search = sample_search[sample_search["Month"].isin(month)]
+    st.dataframe(sample_search)
 
 if selection_buttons == 'Monthly Search':
     month_input = col1.text_input('Please enter month:', 'Three letter code')
-    month_search = df[df['Month'].str.contains(month_input)]
+    month_search = df[df['Month'].str.contains(month_input.capitalize())]
     st.dataframe(month_search)  
     
 if selection_buttons == 'Genotype Search':
     genotype = col1.text_input('Please enter genotype:', '1a, 1b, 3a, etc')
     genotype_search = df[df['Genotype'].str.contains(genotype)]
+    genotype_search = genotype_search[genotype_search["Month"].isin(month)]
     st.dataframe(genotype_search) 
     
 if selection_buttons == 'Cluster Identification':
     cluster = col1.text_input('Please enter cluster ID:', 'Cluster-ID')
     cluster_id = df[df['Cluster'].str.contains(cluster)]
+    cluster_id = cluster_id[cluster_id["Month"].isin(month)]
     st.dataframe(cluster_id) 
     
 if selection_buttons == 'Instrument':
     miseq = col1.text_input('Please enter instrument number:', 'MiSeq-1, MiSeq-2, etc')
     miseq_report = df[df['Instrument'].str.contains(miseq)]
+    miseq_report = miseq_report[miseq_report["Month"].isin(month)]
     st.dataframe(miseq_report) 
     
 if selection_buttons == 'Sequence Query':
     sequence = st.text_input('Please enter nucleotyde sequence:', 'Only DNA sequences allowed')
     sequence_query = df[df['Sequence'].str.contains(sequence)]
+    sequence_query = sequence_query[sequence_query["Month"].isin(month)]
     st.dataframe(sequence_query) 
     
 if selection_buttons == 'Full List':
