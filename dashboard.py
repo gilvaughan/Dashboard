@@ -12,6 +12,11 @@ st.set_page_config(page_title="GHOST Dashboard",
                    initial_sidebar_state=st.session_state.sidebar_state
 )
 
+# ----Horizontal radios-----
+
+st.write('<style>div.row-widget.stRadio > div{flex-direction:row;justify-content: center;} </style>', unsafe_allow_html=True)
+
+st.write('<style>div.st-bf{flex-direction:column;} div.st-ag{font-weight:regular;padding-left:2px;}</style>', unsafe_allow_html=True)
 
 # ----GHOST Logo----
 
