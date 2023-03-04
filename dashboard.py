@@ -146,16 +146,50 @@ fig_samples_by_month = go.Figure(bars_objects)
 fig_samples_by_month.update_traces(hovertemplate='Samples: %{y}') ## Add whatever text you want
 fig_samples_by_month.update_layout(barmode='stack')
 
+#---- MISEQ GRAPHS ----
+
+miseq_performance1 = df.groupby(['Result','Instrument'])['Result'].count().to_frame('Count').reset_index()
+miseq_performance1 = miseq_performance1[miseq_performance1['Instrument'].str.contains('MiSeq-1')]
+fig_miseq_performance1 = px.pie(miseq_performance1, values='Count', names='Result')
+fig_miseq_performance1.update_traces(textposition='inside', textinfo='percent+label', showlegend=False)
+fig_miseq_performance1.update_layout(title_text='MiSeq-1', title_x=0.5)
+
+miseq_performance2 = df.groupby(['Result','Instrument'])['Result'].count().to_frame('Count').reset_index()
+miseq_performance2 = miseq_performance2[miseq_performance2['Instrument'].str.contains('MiSeq-2')]
+fig_miseq_performance2 = px.pie(miseq_performance2, values='Count', names='Result')
+fig_miseq_performance2.update_traces(textposition='inside', textinfo='percent+label', showlegend=False)
+fig_miseq_performance2.update_layout(title_text='MiSeq-2', title_x=0.5)
+
+miseq_performance3 = df.groupby(['Result','Instrument'])['Result'].count().to_frame('Count').reset_index()
+miseq_performance3 = miseq_performance3[miseq_performance3['Instrument'].str.contains('MiSeq-3')]
+fig_miseq_performance3 = px.pie(miseq_performance3, values='Count', names='Result')
+fig_miseq_performance3.update_traces(textposition='inside', textinfo='percent+label')
+fig_miseq_performance3.update_layout(title_text='MiSeq-3', title_x=0.5)
+
+
+#---- BUBBLE GRAPHS ----
+
+df_1 = px.data.gapminder()
+fig_Bubble = px.scatter(
+    df_1.query("year==2007"),
+    x="gdpPercap",
+    y="lifeExp",
+    size="pop",
+    color="continent",
+    hover_name="country",
+    log_x=True,
+    size_max=60,
+)
+
 #---- RADIO BUTTONS ----
-display_sections = ['Sample Search', 'Monthly Search', 'Genotype Search', 'Cluster Identification', 'Instrument', 'Sequence Query', 'Full List', 'State', 'Buble Graph']
+display_sections = ['Sample Search', 'Monthly Search', 'Genotype Search', 'Cluster Identification', 'Instrument', 'Sequence Query','Full List', 'State', 'Buble Graph']
 selection_buttons = st.radio("Make a selection:", display_sections)
 st.markdown("###")
 col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1]) 
 
 if selection_buttons == 'Sample Search':
-    specimen = col1.text_input('Please enter specimen ID:', 'Full or partial sample ID')
-    sample_search = df[df['Sample ID'].str.contains(specimen)]
-    sample_search = sample_search[sample_search["Month"].isin(month)]
+    specimen = col1.text_input('Please enter specimen ID:', 'Exact sample ID')
+    sample_search = df[df['Sample ID'] == (specimen)]
     st.dataframe(sample_search)
 
 if selection_buttons == 'Monthly Search':
@@ -166,54 +200,41 @@ if selection_buttons == 'Monthly Search':
 if selection_buttons == 'Genotype Search':
     genotype = col1.text_input('Please enter genotype:', '1a, 1b, 3a, etc')
     genotype_search = df[df['Genotype'].str.contains(genotype)]
-    genotype_search = genotype_search[genotype_search["Month"].isin(month)]
     st.dataframe(genotype_search) 
     
 if selection_buttons == 'Cluster Identification':
     cluster = col1.text_input('Please enter cluster ID:', 'Cluster-ID')
     cluster_id = df[df['Cluster'].str.contains(cluster)]
-    cluster_id = cluster_id[cluster_id["Month"].isin(month)]
     st.dataframe(cluster_id) 
     
 if selection_buttons == 'Instrument':
     miseq = col1.text_input('Please enter instrument number:', 'MiSeq-1, MiSeq-2, etc')
-    miseq_report = df[df['Instrument'].str.contains(miseq)]
-    miseq_report = miseq_report[miseq_report["Month"].isin(month)]
-    st.dataframe(miseq_report) 
-    
+    miseq_report = df[df['Instrument'] == (miseq)]
+    st.dataframe(miseq_report)
+    left_fig, center_fig, right_fig = st.columns(3)
+    left_fig.plotly_chart(fig_miseq_performance1, theme="streamlit", use_container_width=True)
+    center_fig.plotly_chart(fig_miseq_performance2, theme="streamlit", use_container_width=True)
+    right_fig.plotly_chart(fig_miseq_performance3, theme="streamlit", use_container_width=True)
+
 if selection_buttons == 'Sequence Query':
     sequence = st.text_input('Please enter nucleotyde sequence:', 'Only DNA sequences allowed')
     sequence_query = df[df['Sequence'].str.contains(sequence)]
-    sequence_query = sequence_query[sequence_query["Month"].isin(month)]
     st.dataframe(sequence_query) 
     
 if selection_buttons == 'Full List':
-    st.dataframe(df)
+    df_sorted = df.sort_index()
+    st.dataframe(df_sorted)
 
 if selection_buttons == 'State':
     if st.button('Show/hide filter menu'):
         st.session_state.sidebar_state = 'expanded' if st.session_state.sidebar_state == 'collapsed' else 'collapsed'
         st.experimental_rerun()    
     left_column, right_column = st.columns(2)
-    left_column.plotly_chart(fig_samples_by_state, use_container_width=True)
-    right_column.plotly_chart(fig_samples_by_month, use_container_width=True)
+    left_column.plotly_chart(fig_samples_by_state, theme="streamlit", use_container_width=True)
+    right_column.plotly_chart(fig_samples_by_month, theme="streamlit", use_container_width=True)
 
 if selection_buttons == 'Buble Graph':
-    df = px.data.gapminder()
-
-    fig = px.scatter(
-        df.query("year==2007"),
-        x="gdpPercap",
-        y="lifeExp",
-        size="pop",
-        color="continent",
-        hover_name="country",
-        log_x=True,
-        size_max=60,
-    )
-
-    st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-
+    st.plotly_chart(fig_Bubble, theme="streamlit", use_container_width=True)
 
 #---- HIDE STREAMLIT STYLE ----
 
@@ -224,4 +245,4 @@ hide_st_style = """
             header {visibility: hidden;}
             </style>
             """
-st.markdown(hide_st_style, unsafe_allow_html=True)    
+st.markdown(hide_st_style, unsafe_allow_html=True)
