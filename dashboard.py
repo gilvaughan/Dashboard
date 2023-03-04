@@ -19,10 +19,9 @@ st.write('<style>div.row-widget.stRadio > div{flex-direction:row;justify-content
 st.write('<style>div.st-bf{flex-direction:column;} div.st-ag{font-weight:regular;padding-left:2px;}</style>', unsafe_allow_html=True)
 
 # ----GHOST Logo----
-left, center, right = st.columns(3)
+
 image = Image.open('GHOST_LOGO.png')
-with center:
-    st.image(image)
+st.image(image)
 st.markdown("""---""")
 
 # ---- READ EXCEL ----
