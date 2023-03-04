@@ -199,12 +199,12 @@ if selection_buttons == 'Monthly Search':
     
 if selection_buttons == 'Genotype Search':
     genotype = col1.text_input('Please enter genotype:', '1a, 1b, 3a, etc')
-    genotype_search = df[df['Genotype'].str.contains(genotype)]
+    genotype_search = df[df['Genotype'] == (genotype)]
     st.dataframe(genotype_search) 
     
 if selection_buttons == 'Cluster Identification':
     cluster = col1.text_input('Please enter cluster ID:', 'Cluster-ID')
-    cluster_id = df[df['Cluster'].str.contains(cluster)]
+    cluster_id = df[df['Cluster'] == (cluster)]
     st.dataframe(cluster_id) 
     
 if selection_buttons == 'Instrument':
