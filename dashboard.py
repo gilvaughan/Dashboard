@@ -24,6 +24,7 @@ image = Image.open('GHOST_LOGO.png')
 st.image(image)
 st.markdown("""---""")
 
+
 # ---- READ EXCEL ----
 
 @st.cache_data
@@ -37,7 +38,6 @@ def get_data_from_excel():
         nrows=626,
     )
     return df
-
 
 df = get_data_from_excel()
 
@@ -147,25 +147,24 @@ fig_samples_by_month.update_traces(hovertemplate='Samples: %{y}') ## Add whateve
 fig_samples_by_month.update_layout(barmode='stack')
 
 #---- MISEQ GRAPHS ----
+def miseq(number):
+    num = str(number)
+    
+    perform = "performance " + num
+    seq = "MiSeq-" + num
+    fig = "figure " + num
+    
+    perform = df.groupby(['Result', 'Instrument'])['Result'].count().to_frame('Count').reset_index()
+    perform = perform[perform['Instrument'].str.contains(seq)]
 
-miseq_performance1 = df.groupby(['Result','Instrument'])['Result'].count().to_frame('Count').reset_index()
-miseq_performance1 = miseq_performance1[miseq_performance1['Instrument'].str.contains('MiSeq-1')]
-fig_miseq_performance1 = px.pie(miseq_performance1, values='Count', names='Result')
-fig_miseq_performance1.update_traces(textposition='inside', textinfo='percent+label', showlegend=False)
-fig_miseq_performance1.update_layout(title_text='MiSeq-1', title_x=0.5)
+    fig = px.pie(perform, values='Count', names='Result')
+    fig.update_traces(textposition='inside', textinfo='percent+label', showlegend=False)
+    fig.update_layout(title_text=seq, title_x=0.5)
+    return fig
 
-miseq_performance2 = df.groupby(['Result','Instrument'])['Result'].count().to_frame('Count').reset_index()
-miseq_performance2 = miseq_performance2[miseq_performance2['Instrument'].str.contains('MiSeq-2')]
-fig_miseq_performance2 = px.pie(miseq_performance2, values='Count', names='Result')
-fig_miseq_performance2.update_traces(textposition='inside', textinfo='percent+label', showlegend=False)
-fig_miseq_performance2.update_layout(title_text='MiSeq-2', title_x=0.5)
-
-miseq_performance3 = df.groupby(['Result','Instrument'])['Result'].count().to_frame('Count').reset_index()
-miseq_performance3 = miseq_performance3[miseq_performance3['Instrument'].str.contains('MiSeq-3')]
-fig_miseq_performance3 = px.pie(miseq_performance3, values='Count', names='Result')
-fig_miseq_performance3.update_traces(textposition='inside', textinfo='percent+label')
-fig_miseq_performance3.update_layout(title_text='MiSeq-3', title_x=0.5)
-
+fig_miseq_performance1 = miseq(1)
+fig_miseq_performance2 = miseq(2)
+fig_miseq_performance3 = miseq(3)
 
 #---- BUBBLE GRAPHS ----
 
