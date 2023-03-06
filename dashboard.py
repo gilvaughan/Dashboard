@@ -147,7 +147,7 @@ fig_samples_by_month.update_traces(hovertemplate='Samples: %{y}') ## Add whateve
 fig_samples_by_month.update_layout(barmode='stack')
 
 #---- MISEQ GRAPHS ----
-def miseq(number):
+def create_miseq_fig(number):
     num = str(number)
     
     perform = "performance " + num
@@ -161,10 +161,6 @@ def miseq(number):
     fig.update_traces(textposition='inside', textinfo='percent+label', showlegend=False)
     fig.update_layout(title_text=seq, title_x=0.5)
     return fig
-
-fig_miseq_performance1 = miseq(1)
-fig_miseq_performance2 = miseq(2)
-fig_miseq_performance3 = miseq(3)
 
 #---- BUBBLE GRAPHS ----
 
@@ -210,10 +206,9 @@ if selection_buttons == 'Instrument':
     miseq = col1.text_input('Please enter instrument number:', 'MiSeq-1, MiSeq-2, etc')
     miseq_report = df[df['Instrument'] == (miseq)]
     st.dataframe(miseq_report)
-    left_fig, center_fig, right_fig = st.columns(3)
-    left_fig.plotly_chart(fig_miseq_performance1, theme="streamlit", use_container_width=True)
-    center_fig.plotly_chart(fig_miseq_performance2, theme="streamlit", use_container_width=True)
-    right_fig.plotly_chart(fig_miseq_performance3, theme="streamlit", use_container_width=True)
+    fig_columns = st.columns(3)
+    for i in range(3):
+        fig_columns[i].plotly_chart(create_miseq_fig(i + 1), theme="streamlit", use_container_width=True)
 
 if selection_buttons == 'Sequence Query':
     sequence = st.text_input('Please enter nucleotyde sequence:', 'Only DNA sequences allowed')
