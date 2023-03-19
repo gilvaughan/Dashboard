@@ -214,8 +214,9 @@ fig_map.update_layout(
         )
     )
 
+
 #---- RADIO BUTTONS ----
-display_sections = ['Sample Search', 'Monthly Search', 'Genotype Search', 'Cluster Identification', 'Instrument', 'Sequence Query','Full List', 'State', 'Bubble Graph', 'Bubble Map']
+display_sections = ['Sample Search', 'Monthly Search', 'Genotype Search', 'Cluster Identification', 'Instrument', 'Sequence Query','Full List', 'State', 'Bubble Graph']
 selection_buttons = st.radio("Make a selection:", display_sections)
 st.markdown("###")
 col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1]) 
@@ -266,11 +267,19 @@ if selection_buttons == 'State':
     right_column.plotly_chart(fig_samples_by_month, theme="streamlit", use_container_width=True)
 
 if selection_buttons == 'Bubble Graph':
-    st.plotly_chart(fig_Bubble, theme="streamlit", use_container_width=True)
-    
-if selection_buttons == 'Bubble Map':
-    st.plotly_chart(fig_map, theme="streamlit", use_container_width=True)
-    
+    left_column, right_column = st.columns(2)
+    # new bubble chart
+    samplePerState = df.groupby(['Result', 'State'])['Result'].count().to_frame('Count').reset_index()
+    samplePerState = samplePerState[samplePerState['State'].str.contains("Ge|Te|Fl")]
+
+    state_abbr = {'Texas': 'TX', 'Florida': 'FL', 'Georgia': 'GA'}
+
+    # Replace state names with abbreviations
+    samplePerState = samplePerState.replace({'State': state_abbr})
+    fig =  px.scatter_geo(samplePerState, locations="State", hover_name="Result", scope="usa", locationmode="USA-states", color="State", size="Count")
+    left_column.plotly_chart(fig, theme="streamlit", use_container_width=True)
+    right_column.plotly_chart(fig_map, theme="streamlit", use_container_width=True)
+    st.plotly_chart(fig_Bubble,theme="streamlit", use_container_width=True)
 #---- HIDE STREAMLIT STYLE ----
 
 hide_st_style = """
