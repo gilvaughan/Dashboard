@@ -181,7 +181,7 @@ fig_Bubble = px.scatter(
 df_map = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/2014_us_cities.csv')
 df_map.head()
 
-df_map['text'] = df_map['name'] + '<br>Population ' + (df_map['pop']/1e6).astype(str)+' million'
+df_map['text'] = df_map['name'] + '<br>tested ' + (df_map['pop']/1e6).astype(str)+' samples'
 limits = [(0,2),(3,10),(11,20),(21,50),(50,3000)]
 colors = ["royalblue","crimson","lightseagreen","orange","lightgrey"]
 cities = []
@@ -206,7 +206,7 @@ for i in range(len(limits)):
         name = '{0} - {1}'.format(lim[0],lim[1])))
 
 fig_map.update_layout(
-        title_text = 'GHOST<br>Surveillance 2023',
+        title_text = 'GHOST Surveillance 2023',
         showlegend = True,
         geo = dict(
             scope = 'usa',
