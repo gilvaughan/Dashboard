@@ -206,7 +206,6 @@ for i in range(len(limits)):
         name = '{0} - {1}'.format(lim[0],lim[1])))
 
 fig_map.update_layout(
-        title_text = 'GHOST Surveillance 2023',
         showlegend = True,
         geo = dict(
             scope = 'usa',
