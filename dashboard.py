@@ -13,20 +13,16 @@ st.set_page_config(page_title="GHOST Dashboard",
 )
 
 # ----Horizontal radios-----
-
 st.write('<style>div.row-widget.stRadio > div{flex-direction:row;justify-content: center;} </style>', unsafe_allow_html=True)
-
 st.write('<style>div.st-bf{flex-direction:column;} div.st-ag{font-weight:regular;padding-left:2px;}</style>', unsafe_allow_html=True)
 
 # ----GHOST Logo----
-
 image = Image.open('GHOST_LOGO.png')
 st.image(image)
 st.markdown("""---""")
 
 
 # ---- READ EXCEL ----
-
 @st.cache_data
 def get_data_from_excel():
     df = pd.read_excel(
@@ -50,7 +46,6 @@ months = {'Jan':1,'Feb':2,'Mar':3,
 df = df.sort_values('Month', key = lambda x: x.apply(lambda x:months[x]))
 
 # ---- SLIDE BAR ----
-
 st.sidebar.header("Filters:")
 state = st.sidebar.multiselect(
     "State:",
@@ -82,12 +77,10 @@ df_selection = df.query(
 )
 
 # ---- MAINPAGE ----
-
 st.title(":bar_chart: Dashboard")
 st.markdown("##")
 
 # ----INDICATORS----
-
 samples_processed = int(df_selection["Result"].str.count("Po|Ne|Un").sum())
 positive_samples = int(df_selection["Result"].str.count("Positive").sum())
 negative_samples = int(df_selection["Result"].str.count("Negative").sum())
@@ -110,7 +103,6 @@ with forth_column:
 st.markdown("""---""")
 
 # SAMPLES BY STATE [CHART]
-
 samples_by_state = df_selection.groupby(by=["State", "Result"]).size().to_frame('Results').reset_index()
 results = samples_by_state['Result'].unique()
 states = samples_by_state['State'].unique()
@@ -123,11 +115,10 @@ for state in states:
     bars_objects.append(bar)
     
 fig_samples_by_state = go.Figure(bars_objects)
-fig_samples_by_state.update_traces(hovertemplate='Samples: %{x}') ## Add whatever text you want
+fig_samples_by_state.update_traces(hovertemplate='Samples: %{x}')
 fig_samples_by_state.update_layout(barmode='stack')
 
 # SAMPLES BY MONTH [CHART]
-
 samples_by_month = df_selection.groupby(by=["State", "Month"]).size().to_frame('Months').reset_index()
 monthly = samples_by_month['Month'].unique()
 states = samples_by_month['State'].unique()
@@ -143,7 +134,7 @@ for state in states:
     bars_objects.append(bar)
     
 fig_samples_by_month = go.Figure(bars_objects)
-fig_samples_by_month.update_traces(hovertemplate='Samples: %{y}') ## Add whatever text you want
+fig_samples_by_month.update_traces(hovertemplate='Samples: %{y}')
 fig_samples_by_month.update_layout(barmode='stack')
 
 #---- MISEQ GRAPHS ----
@@ -163,7 +154,6 @@ def create_miseq_fig(number):
     return fig
 
 #---- BUBBLE GRAPHS ----
-
 df_1 = px.data.gapminder()
 fig_Bubble = px.scatter(
     df_1.query("year==2007"),
@@ -177,7 +167,6 @@ fig_Bubble = px.scatter(
 )
 
 #---- BUBBLE MAP ----
-
 df_map = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/2014_us_cities.csv')
 df_map.head()
 
@@ -213,6 +202,14 @@ fig_map.update_layout(
         )
     )
 
+#---- NEW BUBBLE MAP ----
+samplePerState = df.groupby(['Result', 'State'])['Result'].count().to_frame('Count').reset_index()
+samplePerState = samplePerState[samplePerState['State'].str.contains("Ge|Te|Fl")]
+
+state_abbr = {'Texas': 'TX', 'Florida': 'FL', 'Georgia': 'GA'}
+
+samplePerState = samplePerState.replace({'State': state_abbr}) # Replace state names with abbreviations
+fig =  px.scatter_geo(samplePerState, locations="State", hover_name="Result", scope="usa", locationmode="USA-states", color="State", size="Count")
 
 #---- RADIO BUTTONS ----
 display_sections = ['Query', 'Instrument', 'Full List', 'State', 'Bubble Graph']
@@ -274,20 +271,11 @@ if selection_buttons == 'State':
 
 if selection_buttons == 'Bubble Graph':
     left_column, right_column = st.columns(2)
-    # new bubble chart
-    samplePerState = df.groupby(['Result', 'State'])['Result'].count().to_frame('Count').reset_index()
-    samplePerState = samplePerState[samplePerState['State'].str.contains("Ge|Te|Fl")]
-
-    state_abbr = {'Texas': 'TX', 'Florida': 'FL', 'Georgia': 'GA'}
-
-    # Replace state names with abbreviations
-    samplePerState = samplePerState.replace({'State': state_abbr})
-    fig =  px.scatter_geo(samplePerState, locations="State", hover_name="Result", scope="usa", locationmode="USA-states", color="State", size="Count")
     left_column.plotly_chart(fig, theme="streamlit", use_container_width=True)
     right_column.plotly_chart(fig_map, theme="streamlit", use_container_width=True)
     st.plotly_chart(fig_Bubble,theme="streamlit", use_container_width=True)
-#---- HIDE STREAMLIT STYLE ----
 
+#---- HIDE STREAMLIT STYLE ----
 hide_st_style = """
             <style>
             MainMenu {visibility: hidden;}
