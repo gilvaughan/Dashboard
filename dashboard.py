@@ -215,31 +215,43 @@ fig_map.update_layout(
 
 
 #---- RADIO BUTTONS ----
-display_sections = ['Sample Search', 'Monthly Search', 'Genotype Search', 'Cluster Identification', 'Instrument', 'Sequence Query','Full List', 'State', 'Bubble Graph']
+display_sections = ['Query', 'Instrument', 'Full List', 'State', 'Bubble Graph']
 selection_buttons = st.radio("Make a selection:", display_sections)
 st.markdown("###")
 col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1]) 
 
-if selection_buttons == 'Sample Search':
-    specimen = col1.text_input('Please enter specimen ID:', 'Exact sample ID')
-    sample_search = df[df['Sample ID'] == (specimen)]
-    st.dataframe(sample_search)
+if selection_buttons == 'Query':
+    sample_search = st.checkbox('Sample Search')
+    montly_search = st.checkbox('Monthly Search')
+    genotype_search = st.checkbox('Genotype Search')
+    cluster_id = st.checkbox('Cluster Identification')
+    seq_query = st.checkbox('Sequence Query')
 
-if selection_buttons == 'Monthly Search':
-    month_input = col1.text_input('Please enter month:', 'Three letter code')
-    month_search = df[df['Month'].str.contains(month_input.capitalize())]
-    st.dataframe(month_search)  
-    
-if selection_buttons == 'Genotype Search':
-    genotype = col1.text_input('Please enter genotype:', '1a, 1b, 3a, etc')
-    genotype_search = df[df['Genotype'] == (genotype)]
-    st.dataframe(genotype_search) 
-    
-if selection_buttons == 'Cluster Identification':
-    cluster = col1.text_input('Please enter cluster ID:', 'Cluster-ID')
-    cluster_id = df[df['Cluster'] == (cluster)]
-    st.dataframe(cluster_id) 
-    
+    if sample_search:
+        specimen = col1.text_input('Please enter specimen ID:', 'Exact sample ID')
+        sample_search = df[df['Sample ID'] == (specimen)]
+        st.dataframe(sample_search)
+
+    if montly_search:
+        month_input = col1.text_input('Please enter month:', 'Three letter code')
+        month_search = df[df['Month'].str.contains(month_input.capitalize())]
+        st.dataframe(month_search)  
+        
+    if genotype_search:
+        genotype = col1.text_input('Please enter genotype:', '1a, 1b, 3a, etc')
+        genotype_search = df[df['Genotype'] == (genotype)]
+        st.dataframe(genotype_search) 
+        
+    if cluster_id:
+        cluster = col1.text_input('Please enter cluster ID:', 'Cluster-ID')
+        cluster_id = df[df['Cluster'] == (cluster)]
+        st.dataframe(cluster_id) 
+
+    if seq_query:
+        sequence = st.text_input('Please enter nucleotyde sequence:', 'Only DNA sequences allowed')
+        sequence_query = df[df['Sequence'].str.contains(sequence)]
+        st.dataframe(sequence_query) 
+
 if selection_buttons == 'Instrument':
     miseq = col1.text_input('Please enter instrument number:', 'MiSeq-1, MiSeq-2, etc')
     miseq_report = df[df['Instrument'] == (miseq)]
@@ -247,11 +259,6 @@ if selection_buttons == 'Instrument':
     fig_columns = st.columns(3)
     for i in range(3):
         fig_columns[i].plotly_chart(create_miseq_fig(i + 1), theme="streamlit", use_container_width=True)
-
-if selection_buttons == 'Sequence Query':
-    sequence = st.text_input('Please enter nucleotyde sequence:', 'Only DNA sequences allowed')
-    sequence_query = df[df['Sequence'].str.contains(sequence)]
-    st.dataframe(sequence_query) 
     
 if selection_buttons == 'Full List':
     df_sorted = df.sort_index()
